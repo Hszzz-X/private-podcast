@@ -1,9 +1,6 @@
-// 获取所有 episodes（支持主题筛选）
-module.exports = async (req, res) => {
+export default function handler(req, res) {
   const { topic } = req.query;
 
-  // TODO: 从 Vercel KV 读取数据
-  // 这里暂时返回示例数据
   const episodes = [
     {
       id: 1,
@@ -24,13 +21,4 @@ module.exports = async (req, res) => {
   }
 
   res.status(200).json({ success: true, data: filtered });
-};
-
-// 添加新 episode
-module.exports.post = async (req, res) => {
-  const { title, url, description, topic, source_type, duration_seconds, publish_date } = req.body;
-
-  // TODO: 保存到 Vercel KV
-
-  res.status(200).json({ success: true, data: { id: Math.floor(Math.random() * 1000) } });
-};
+}

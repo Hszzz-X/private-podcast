@@ -1,6 +1,4 @@
-// 获取统计数据
-module.exports = async (req, res) => {
-  // TODO: 从 Vercel KV 读取统计数据
+export default function handler(req, res) {
   const stats = [
     {
       topic: 'ai',
@@ -10,4 +8,4 @@ module.exports = async (req, res) => {
   ];
 
   res.status(200).json({ success: true, data: stats });
-};
+}

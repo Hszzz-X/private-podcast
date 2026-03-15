@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>糊糊的私人播客</title>
+    <link>https://hszzz-x.github.io/private-podcast</link>
+    <language>zh-cn</language>
+    <itunes:author>糊糊</itunes:author>
+    <description>个人收藏视频转播客，1.25倍速精华版</description>
+    <itunes:image href="https://hszzz-x.github.io/private-podcast/cover.jpg"/>
+    <itunes:category text="Technology"/>
+        <item>
+      <title>设计师在AI时代出路很清晰：远离Figma，尽早写代码</title>
+      <description>Cursor设计负责人Ryo Lu深度对话：设计师如何转型为独立构建者（Builder）。从Figma到代码，从分工到独立创造。</description>
+      <guid isPermaLink="false">02dc4fa6b93976391b77ac7b4fef999e</guid>
+      <enclosure url="https://hszzz-x.github.io/private-podcast/audio/20260315_014557_.m4a" type="audio/mp4" length="46072387"/>
+      <pubDate>Sun, 15 Mar 2026 08:49:52 +0000</pubDate>
+      <itunes:duration>00:47:00</itunes:duration>
+      <itunes:author>课代表</itunes:author>
+    </item>
+    <!-- Episodes will be added here -->
+  </channel>
+</rss>

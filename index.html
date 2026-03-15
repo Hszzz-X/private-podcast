@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>糊糊的私人播客</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        .stats {
+            font-size: 13px;
+            color: #888888;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            background: #FFFFFF;
+            color: #666666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .filter-btn:hover {
+            border-color: #cccccc;
+            color: #333333;
+        }
+
+        .filter-btn.active {
+            border-color: #000000;
+            color: #000000;
+            background: #fafafa;
+        }
+
+        .episode-card {
+            padding: 24px 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.15s;
+        }
+
+        .episode-card:last-child {
+            border-bottom: none;
+        }
+
+        .episode-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .episode-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+            flex: 1;
+            line-height: 1.5;
+            letter-spacing: -0.3px;
+        }
+
+        .episode-topic {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: #f5f5f5;
+            color: #666666;
+            margin-left: 12px;
+            white-space: nowrap;
+        }
+
+        .episode-topic.ai {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .episode-topic.dog {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .episode-desc {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .episode-meta {
+            font-size: 12px;
+            color: #888888;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar {
+            height: 2px;
+            background: #f0f0f0;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #000000;
+            transition: width 0.3s;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .play-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            border: 1px solid #e5e5e5;
+            background: #FFFFFF;
+            color: #1a1a1a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+
+        .play-btn:hover {
+            border-color: #000000;
+            background: #fafafa;
+        }
+
+        .audio-container {
+            flex: 1;
+            min-width: 0;
+        }
+
+        audio {
+            width: 100%;
+            display: none;
+        }
+
+        .time-display {
+            font-size: 12px;
+            color: #888888;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .completed-badge {
+            display: inline-block;
+            background: #f0fdf4;
+            color: #166534;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888888;
+            font-size: 14px;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 30px 16px;
+            }
+
+            h1 {
+                font-size: 18px;
+                margin-bottom: 30px;
+            }
+
+            .episode-title {
+                font-size: 15px;
+            }
+
+            .episode-desc {
+                font-size: 13px;
+            }
+
+            .filter-bar {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .filter-btn {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>私人播客</h1>
+
+        <div class="stats" id="stats">
+            <span id="stats-content">加载中...</span>
+        </div>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-topic="all">全部</button>
+            <button class="filter-btn" data-topic="ai">AI</button>
+            <button class="filter-btn" data-topic="dog">狗</button>
+        </div>
+
+        <div id="episodes-container">
+            <!-- Episodes will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let currentFilter = 'all';
+        let currentPlayingEpisode = null;
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const { data } = await response.json();
+
+                let html = '';
+                const stats = [];
+                data.forEach(stat => {
+                    const hours = Math.floor(stat.total_seconds / 3600);
+                    const mins = Math.floor((stat.total_seconds % 3600) / 60);
+                    const topicName = stat.topic === 'ai' ? 'AI' : stat.topic === 'dog' ? '狗' : stat.topic;
+                    stats.push(`${topicName} ${stat.count}期`);
+                    if (hours > 0 || mins > 0) {
+                        stats.push(`${hours}h ${mins}m`);
+                    }
+                });
+                html = stats.join(' · ');
+                document.getElementById('stats-content').textContent = html;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        async function loadEpisodes() {
+            try {
+                const url = currentFilter === 'all' ?
+                    `${API_BASE}/episodes` :
+                    `${API_BASE}/episodes?topic=${currentFilter}`;
+
+                const response = await fetch(url);
+                const { data } = await response.json();
+                renderEpisodes(data);
+            } catch (error) {
+                console.error('Error loading episodes:', error);
+                document.getElementById('episodes-container').innerHTML =
+                    '<div class="empty-state">加载失败，请检查 API 服务</div>';
+            }
+        }
+
+        function renderEpisodes(episodes) {
+            const container = document.getElementById('episodes-container');
+
+            if (episodes.length === 0) {
+                container.innerHTML = '<div class="empty-state">暂无内容</div>';
+                return;
+            }
+
+            container.innerHTML = episodes.map(ep => {
+                const progress = ep.playback_state ?
+                    (ep.playback_state.position_seconds / ep.duration_seconds) * 100 : 0;
+                const completed = ep.playback_state?.completed;
+                const isPlaying = currentPlayingEpisode === ep.id;
+                const topicName = ep.topic === 'ai' ? 'AI' : ep.topic === 'dog' ? '狗' : ep.topic;
+
+                return `
+                    <div class="episode-card" data-episode-id="${ep.id}">
+                        <div class="episode-header">
+                            <div class="episode-title">${ep.title}</div>
+                            <span class="episode-topic ${ep.topic}">${topicName}</span>
+                        </div>
+                        <div class="episode-desc">${ep.description}</div>
+                        <div class="episode-meta">
+                            <span>${formatTime(ep.duration_seconds || 0)}</span>
+                            <span>·</span>
+                            <span>${new Date(ep.publish_date).toLocaleDateString('zh-CN')}</span>
+                            ${completed ? '<span class="completed-badge">已收听</span>' : ''}
+                        </div>
+                        ${progress > 0 && !completed ? `
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="episode-meta" style="margin-bottom: 8px;">
+                                <span>上次听到 ${formatTime(ep.playback_state?.position_seconds || 0)}</span>
+                            </div>
+                        ` : ''}
+                        <div class="audio-controls">
+                            <button class="play-btn" onclick="togglePlay(${ep.id})">
+                                ${isPlaying ? '⏸' : '▶'}
+                            </button>
+                            <div class="audio-container">
+                                <audio controls id="audio-${ep.id}" src="${ep.url}"></audio>
+                            </div>
+                            <div class="time-display" id="time-${ep.id}">${formatTime(0)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            episodes.forEach(ep => {
+                const audio = document.getElementById(`audio-${ep.id}`);
+                if (!audio) return;
+
+                audio.addEventListener('timeupdate', () => {
+                    document.getElementById(`time-${ep.id}`).textContent = formatTime(audio.currentTime);
+
+                    if (Math.floor(audio.currentTime) % 5 === 0) {
+                        saveProgress(ep.id, audio.currentTime, false);
+                    }
+                });
+
+                audio.addEventListener('ended', () => {
+                    saveProgress(ep.id, audio.currentTime, true);
+                    currentPlayingEpisode = null;
+                    loadEpisodes();
+                });
+
+                audio.addEventListener('play', () => {
+                    document.querySelectorAll('audio').forEach(a => {
+                        if (a !== audio) a.pause();
+                    });
+                    currentPlayingEpisode = ep.id;
+                    loadEpisodes();
+                });
+
+                audio.addEventListener('pause', () => {
+                    if (currentPlayingEpisode === ep.id) {
+                        currentPlayingEpisode = null;
+                        loadEpisodes();
+                    }
+                });
+            });
+        }
+
+        function togglePlay(episodeId) {
+            const audio = document.getElementById(`audio-${episodeId}`);
+            if (audio.paused) {
+                const card = document.querySelector(`[data-episode-id="${episodeId}"]`);
+                const progressText = card.querySelector('.episode-meta span:first-child');
+                if (progressText && progressText.textContent.includes('上次听到')) {
+                    const timeStr = progressText.textContent.replace('上次听到 ', '');
+                    const [mins, secs] = timeStr.split(':').map(Number);
+                    audio.currentTime = mins * 60 + secs;
+                }
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        async function saveProgress(episodeId, position, completed) {
+            try {
+                await fetch(`${API_BASE}/playback/${episodeId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ position_seconds: Math.floor(position), completed })
+                });
+            } catch (error) {
+                console.error('Error saving progress:', error);
+            }
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.topic;
+                loadEpisodes();
+            });
+        });
+
+        loadStats();
+        loadEpisodes();
+    </script>
+</body>
+</html>

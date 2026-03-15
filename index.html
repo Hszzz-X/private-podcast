@@ -254,9 +254,9 @@
     </div>
 
     <script>
-        const API_BASE = 'https://private-podcast.vercel.app/api';
         let currentFilter = 'all';
         let currentPlayingEpisode = null;
+        let episodes = [];
 
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -264,57 +264,57 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        async function loadStats() {
-            try {
-                const response = await fetch(`${API_BASE}/stats`);
-                const { data } = await response.json();
+        function loadStats() {
+            const stats = {};
+            episodes.forEach(ep => {
+                if (!stats[ep.topic]) {
+                    stats[ep.topic] = {
+                        topic: ep.topic,
+                        count: 0,
+                        total_seconds: 0
+                    };
+                }
+                stats[ep.topic].count++;
+                stats[ep.topic].total_seconds += ep.duration_seconds || 0;
+            });
 
-                let html = '';
-                const stats = [];
-                data.forEach(stat => {
-                    const hours = Math.floor(stat.total_seconds / 3600);
-                    const mins = Math.floor((stat.total_seconds % 3600) / 60);
-                    const topicName = stat.topic === 'ai' ? 'AI' : stat.topic === 'dog' ? '狗' : stat.topic;
-                    stats.push(`${topicName} ${stat.count}期`);
-                    if (hours > 0 || mins > 0) {
-                        stats.push(`${hours}h ${mins}m`);
-                    }
-                });
-                html = stats.join(' · ');
-                document.getElementById('stats-content').textContent = html;
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
+            let html = '';
+            const statsData = Object.values(stats);
+            statsData.forEach(stat => {
+                const hours = Math.floor(stat.total_seconds / 3600);
+                const mins = Math.floor((stat.total_seconds % 3600) / 60);
+                const topicName = stat.topic === 'ai' ? 'AI' : stat.topic === 'dog' ? '狗' : stat.topic;
+                html += `${topicName} ${stat.count}期`;
+                if (hours > 0 || mins > 0) {
+                    html += ` (${hours}h ${mins}m)`;
+                }
+                html += ' · ';
+            });
+
+            document.getElementById('stats-content').textContent = html.slice(0, -3);
         }
 
-        async function loadEpisodes() {
-            try {
-                const url = currentFilter === 'all' ?
-                    `${API_BASE}/episodes` :
-                    `${API_BASE}/episodes?topic=${currentFilter}`;
-
-                const response = await fetch(url);
-                const { data } = await response.json();
-                renderEpisodes(data);
-            } catch (error) {
-                console.error('Error loading episodes:', error);
-                document.getElementById('episodes-container').innerHTML =
-                    '<div class="empty-state">加载失败，请检查 API 服务</div>';
+        function loadEpisodes() {
+            let filtered = episodes;
+            if (currentFilter !== 'all') {
+                filtered = episodes.filter(ep => ep.topic === currentFilter);
             }
+            renderEpisodes(filtered);
         }
 
-        function renderEpisodes(episodes) {
+        function renderEpisodes(episodesToRender) {
             const container = document.getElementById('episodes-container');
 
-            if (episodes.length === 0) {
+            if (episodesToRender.length === 0) {
                 container.innerHTML = '<div class="empty-state">暂无内容</div>';
                 return;
             }
 
-            container.innerHTML = episodes.map(ep => {
-                const progress = ep.playback_state ?
-                    (ep.playback_state.position_seconds / ep.duration_seconds) * 100 : 0;
-                const completed = ep.playback_state?.completed;
+            container.innerHTML = episodesToRender.map(ep => {
+                const playbackState = JSON.parse(localStorage.getItem(`playback_${ep.id}`) || '{}');
+                const progress = playbackState.position_seconds ?
+                    (playbackState.position_seconds / ep.duration_seconds) * 100 : 0;
+                const completed = playbackState.completed;
                 const isPlaying = currentPlayingEpisode === ep.id;
                 const topicName = ep.topic === 'ai' ? 'AI' : ep.topic === 'dog' ? '狗' : ep.topic;
 
@@ -336,7 +336,7 @@
                                 <div class="progress-fill" style="width: ${progress}%"></div>
                             </div>
                             <div class="episode-meta" style="margin-bottom: 8px;">
-                                <span>上次听到 ${formatTime(ep.playback_state?.position_seconds || 0)}</span>
+                                <span>上次听到 ${formatTime(playbackState.position_seconds || 0)}</span>
                             </div>
                         ` : ''}
                         <div class="audio-controls">
@@ -352,7 +352,7 @@
                 `;
             }).join('');
 
-            episodes.forEach(ep => {
+            episodesToRender.forEach(ep => {
                 const audio = document.getElementById(`audio-${ep.id}`);
                 if (!audio) return;
 
@@ -390,12 +390,9 @@
         function togglePlay(episodeId) {
             const audio = document.getElementById(`audio-${episodeId}`);
             if (audio.paused) {
-                const card = document.querySelector(`[data-episode-id="${episodeId}"]`);
-                const progressText = card.querySelector('.episode-meta span:first-child');
-                if (progressText && progressText.textContent.includes('上次听到')) {
-                    const timeStr = progressText.textContent.replace('上次听到 ', '');
-                    const [mins, secs] = timeStr.split(':').map(Number);
-                    audio.currentTime = mins * 60 + secs;
+                const playbackState = JSON.parse(localStorage.getItem(`playback_${episodeId}`) || '{}');
+                if (playbackState.position_seconds) {
+                    audio.currentTime = playbackState.position_seconds;
                 }
                 audio.play();
             } else {
@@ -403,16 +400,13 @@
             }
         }
 
-        async function saveProgress(episodeId, position, completed) {
-            try {
-                await fetch(`${API_BASE}/playback/${episodeId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ position_seconds: Math.floor(position), completed })
-                });
-            } catch (error) {
-                console.error('Error saving progress:', error);
-            }
+        function saveProgress(episodeId, position, completed) {
+            const playbackState = {
+                position_seconds: Math.floor(position),
+                completed: completed,
+                last_played: new Date().toISOString()
+            };
+            localStorage.setItem(`playback_${episodeId}`, JSON.stringify(playbackState));
         }
 
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -424,8 +418,21 @@
             });
         });
 
-        loadStats();
-        loadEpisodes();
+        // 初始化 - 从本地 JSON 文件加载数据
+        async function init() {
+            try {
+                const response = await fetch('./episodes.json');
+                episodes = await response.json();
+                loadStats();
+                loadEpisodes();
+            } catch (error) {
+                console.error('Error loading episodes:', error);
+                document.getElementById('episodes-container').innerHTML =
+                    '<div class="empty-state">加载失败</div>';
+            }
+        }
+
+        init();
     </script>
 </body>
 </html>

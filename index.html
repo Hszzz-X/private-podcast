@@ -177,7 +177,7 @@
 
         audio {
             width: 100%;
-            display: none;
+            height: 32px;
         }
 
         .time-display {
@@ -239,7 +239,7 @@
         <h1>私人播客</h1>
 
         <div class="stats" id="stats">
-            <span id="stats-content">加载中...</span>
+            <span id="stats-content">AI 2期 (1h 18m)</span>
         </div>
 
         <div class="filter-bar">
@@ -249,14 +249,37 @@
         </div>
 
         <div id="episodes-container">
-            <!-- Episodes will be loaded here -->
+            <!-- Episodes will be rendered here -->
         </div>
     </div>
 
     <script>
+        // Hardcoded episodes list
+        let episodes = [
+            {
+                id: 8,
+                title: "游戏设计传奇：Jeff Kaplan的职业生涯、设计哲学与暴雪往事（中文播客）",
+                url: "audio/20260316_070226_jeff_kaplan.m4a",
+                description: "Jeff Kaplan是暴雪传奇游戏设计师，曾主导《魔兽世界》和《守望先锋》。本期中文播客深入探讨了他的职业生涯、设计哲学和暴雪往事。",
+                topic: "ai",
+                duration_seconds: 1860,
+                publish_date: "2026-03-16",
+                created_at: "2026-03-16T14:02:00.000Z"
+            },
+            {
+                id: 1,
+                title: "设计师在AI时代出路很清晰：远离Figma，尽早写代码",
+                url: "audio/20260315_014557_.m4a",
+                description: "Cursor设计负责人Ryo Lu深度对话：设计师如何转型为独立构建者（Builder）。从Figma到代码，从分工到独立创造。",
+                topic: "ai",
+                duration_seconds: 2820,
+                publish_date: "2026-03-15",
+                created_at: "2026-03-15T00:00:00.000Z"
+            }
+        ];
+
         let currentFilter = 'all';
         let currentPlayingEpisode = null;
-        let episodes = [];
 
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -344,7 +367,7 @@
                                 ${isPlaying ? '⏸' : '▶'}
                             </button>
                             <div class="audio-container">
-                                <audio controls id="audio-${ep.id}" src="${ep.url}"></audio>
+                                <audio id="audio-${ep.id}" src="${ep.url}"></audio>
                             </div>
                             <div class="time-display" id="time-${ep.id}">${formatTime(0)}</div>
                         </div>
@@ -418,21 +441,9 @@
             });
         });
 
-        // 初始化 - 从本地 JSON 文件加载数据
-        async function init() {
-            try {
-                const response = await fetch('./episodes.json');
-                episodes = await response.json();
-                loadStats();
-                loadEpisodes();
-            } catch (error) {
-                console.error('Error loading episodes:', error);
-                document.getElementById('episodes-container').innerHTML =
-                    '<div class="empty-state">加载失败</div>';
-            }
-        }
-
-        init();
+        // Initialize
+        loadStats();
+        loadEpisodes();
     </script>
 </body>
 </html>

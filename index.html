@@ -40,78 +40,21 @@
             border-bottom: 1px solid #f0f0f0;
         }
 
-        .filter-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 40px;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid #e5e5e5;
-            border-radius: 4px;
-            background: #FFFFFF;
-            color: #666666;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .filter-btn:hover {
-            border-color: #cccccc;
-            color: #333333;
-        }
-
-        .filter-btn.active {
-            border-color: #000000;
-            color: #000000;
-            background: #fafafa;
-        }
-
         .episode-card {
             padding: 24px 0;
             border-bottom: 1px solid #f0f0f0;
-            transition: all 0.15s;
         }
 
         .episode-card:last-child {
             border-bottom: none;
         }
 
-        .episode-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-
         .episode-title {
             font-size: 16px;
             font-weight: 500;
             color: #1a1a1a;
-            flex: 1;
+            margin-bottom: 8px;
             line-height: 1.5;
-            letter-spacing: -0.3px;
-        }
-
-        .episode-topic {
-            font-size: 12px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: #f5f5f5;
-            color: #666666;
-            margin-left: 12px;
-            white-space: nowrap;
-        }
-
-        .episode-topic.ai {
-            background: #f0fdf4;
-            color: #166534;
-        }
-
-        .episode-topic.dog {
-            background: #fffbeb;
-            color: #b45309;
         }
 
         .episode-desc {
@@ -125,111 +68,19 @@
             font-size: 12px;
             color: #888888;
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .progress-bar {
-            height: 2px;
-            background: #f0f0f0;
-            margin-bottom: 12px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #000000;
-            transition: width 0.3s;
-        }
-
-        .audio-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .play-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-            border: 1px solid #e5e5e5;
-            background: #FFFFFF;
-            color: #1a1a1a;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            transition: all 0.15s;
-            flex-shrink: 0;
-        }
-
-        .play-btn:hover {
-            border-color: #000000;
-            background: #fafafa;
-        }
-
-        .audio-container {
-            flex: 1;
-            min-width: 0;
         }
 
         audio {
             width: 100%;
-            height: 32px;
-        }
-
-        .time-display {
-            font-size: 12px;
-            color: #888888;
-            min-width: 60px;
-            text-align: right;
-        }
-
-        .completed-badge {
-            display: inline-block;
-            background: #f0fdf4;
-            color: #166534;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            margin-left: 8px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #888888;
-            font-size: 14px;
+            height: 40px;
         }
 
         @media (max-width: 640px) {
             body {
                 padding: 30px 16px;
             }
-
-            h1 {
-                font-size: 18px;
-                margin-bottom: 30px;
-            }
-
             .episode-title {
                 font-size: 15px;
-            }
-
-            .episode-desc {
-                font-size: 13px;
-            }
-
-            .filter-bar {
-                flex-wrap: wrap;
-                gap: 6px;
-            }
-
-            .filter-btn {
-                font-size: 13px;
-                padding: 6px 12px;
             }
         }
     </style>
@@ -238,212 +89,49 @@
     <div class="container">
         <h1>私人播客</h1>
 
-        <div class="stats" id="stats">
-            <span id="stats-content">AI 2期 (1h 18m)</span>
+        <div class="stats">
+            AI 2期 (1h 18m)
         </div>
 
-        <div class="filter-bar">
-            <button class="filter-btn active" data-topic="all">全部</button>
-            <button class="filter-btn" data-topic="ai">AI</button>
-            <button class="filter-btn" data-topic="dog">狗</button>
+        <!-- Episode 1: Jeff Kaplan 中文播客 -->
+        <div class="episode-card">
+            <div class="episode-title">游戏设计传奇：Jeff Kaplan的职业生涯、设计哲学与暴雪往事（中文播客）</div>
+            <div class="episode-desc">Jeff Kaplan是暴雪传奇游戏设计师，曾主导《魔兽世界》和《守望先锋》。本期中文播客深入探讨了他的职业生涯、设计哲学和暴雪往事。</div>
+            <div class="episode-meta">时长：31:00 | 发布：2026-03-16</div>
+            <audio controls preload="metadata">
+                <source src="audio/20260316_070226_jeff_kaplan.m4a" type="audio/mp4">
+            </audio>
         </div>
 
-        <div id="episodes-container">
-            <!-- Episodes will be rendered here -->
+        <!-- Episode 2: 设计师AI时代 -->
+        <div class="episode-card">
+            <div class="episode-title">设计师在AI时代出路很清晰：远离Figma，尽早写代码</div>
+            <div class="episode-desc">Cursor设计负责人Ryo Lu深度对话：设计师如何转型为独立构建者（Builder）。从Figma到代码，从分工到独立创造。</div>
+            <div class="episode-meta">时长：47:00 | 发布：2026-03-15</div>
+            <audio controls preload="metadata">
+                <source src="audio/20260315_014557_.m4a" type="audio/mp4">
+            </audio>
         </div>
     </div>
 
     <script>
-        // Hardcoded episodes list
-        let episodes = [
-            {
-                id: 8,
-                title: "游戏设计传奇：Jeff Kaplan的职业生涯、设计哲学与暴雪往事（中文播客）",
-                url: "audio/20260316_070226_jeff_kaplan.m4a",
-                description: "Jeff Kaplan是暴雪传奇游戏设计师，曾主导《魔兽世界》和《守望先锋》。本期中文播客深入探讨了他的职业生涯、设计哲学和暴雪往事。",
-                topic: "ai",
-                duration_seconds: 1860,
-                publish_date: "2026-03-16",
-                created_at: "2026-03-16T14:02:00.000Z"
-            },
-            {
-                id: 1,
-                title: "设计师在AI时代出路很清晰：远离Figma，尽早写代码",
-                url: "audio/20260315_014557_.m4a",
-                description: "Cursor设计负责人Ryo Lu深度对话：设计师如何转型为独立构建者（Builder）。从Figma到代码，从分工到独立创造。",
-                topic: "ai",
-                duration_seconds: 2820,
-                publish_date: "2026-03-15",
-                created_at: "2026-03-15T00:00:00.000Z"
-            }
-        ];
-
-        let currentFilter = 'all';
-        let currentPlayingEpisode = null;
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        function loadStats() {
-            const stats = {};
-            episodes.forEach(ep => {
-                if (!stats[ep.topic]) {
-                    stats[ep.topic] = {
-                        topic: ep.topic,
-                        count: 0,
-                        total_seconds: 0
-                    };
-                }
-                stats[ep.topic].count++;
-                stats[ep.topic].total_seconds += ep.duration_seconds || 0;
+        // 简单的错误处理
+        document.querySelectorAll('audio').forEach((audio, index) => {
+            audio.addEventListener('error', (e) => {
+                console.error('音频加载失败:', e);
+                const card = audio.closest('.episode-card');
+                const errorMsg = document.createElement('div');
+                errorMsg.style.color = 'red';
+                errorMsg.style.fontSize = '12px';
+                errorMsg.style.marginTop = '10px';
+                errorMsg.textContent = '⚠️ 音频文件加载失败，请检查文件路径';
+                card.appendChild(errorMsg);
             });
 
-            let html = '';
-            const statsData = Object.values(stats);
-            statsData.forEach(stat => {
-                const hours = Math.floor(stat.total_seconds / 3600);
-                const mins = Math.floor((stat.total_seconds % 3600) / 60);
-                const topicName = stat.topic === 'ai' ? 'AI' : stat.topic === 'dog' ? '狗' : stat.topic;
-                html += `${topicName} ${stat.count}期`;
-                if (hours > 0 || mins > 0) {
-                    html += ` (${hours}h ${mins}m)`;
-                }
-                html += ' · ';
-            });
-
-            document.getElementById('stats-content').textContent = html.slice(0, -3);
-        }
-
-        function loadEpisodes() {
-            let filtered = episodes;
-            if (currentFilter !== 'all') {
-                filtered = episodes.filter(ep => ep.topic === currentFilter);
-            }
-            renderEpisodes(filtered);
-        }
-
-        function renderEpisodes(episodesToRender) {
-            const container = document.getElementById('episodes-container');
-
-            if (episodesToRender.length === 0) {
-                container.innerHTML = '<div class="empty-state">暂无内容</div>';
-                return;
-            }
-
-            container.innerHTML = episodesToRender.map(ep => {
-                const playbackState = JSON.parse(localStorage.getItem(`playback_${ep.id}`) || '{}');
-                const progress = playbackState.position_seconds ?
-                    (playbackState.position_seconds / ep.duration_seconds) * 100 : 0;
-                const completed = playbackState.completed;
-                const isPlaying = currentPlayingEpisode === ep.id;
-                const topicName = ep.topic === 'ai' ? 'AI' : ep.topic === 'dog' ? '狗' : ep.topic;
-
-                return `
-                    <div class="episode-card" data-episode-id="${ep.id}">
-                        <div class="episode-header">
-                            <div class="episode-title">${ep.title}</div>
-                            <span class="episode-topic ${ep.topic}">${topicName}</span>
-                        </div>
-                        <div class="episode-desc">${ep.description}</div>
-                        <div class="episode-meta">
-                            <span>${formatTime(ep.duration_seconds || 0)}</span>
-                            <span>·</span>
-                            <span>${new Date(ep.publish_date).toLocaleDateString('zh-CN')}</span>
-                            ${completed ? '<span class="completed-badge">已收听</span>' : ''}
-                        </div>
-                        ${progress > 0 && !completed ? `
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: ${progress}%"></div>
-                            </div>
-                            <div class="episode-meta" style="margin-bottom: 8px;">
-                                <span>上次听到 ${formatTime(playbackState.position_seconds || 0)}</span>
-                            </div>
-                        ` : ''}
-                        <div class="audio-controls">
-                            <button class="play-btn" onclick="togglePlay(${ep.id})">
-                                ${isPlaying ? '⏸' : '▶'}
-                            </button>
-                            <div class="audio-container">
-                                <audio id="audio-${ep.id}" src="${ep.url}"></audio>
-                            </div>
-                            <div class="time-display" id="time-${ep.id}">${formatTime(0)}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            episodesToRender.forEach(ep => {
-                const audio = document.getElementById(`audio-${ep.id}`);
-                if (!audio) return;
-
-                audio.addEventListener('timeupdate', () => {
-                    document.getElementById(`time-${ep.id}`).textContent = formatTime(audio.currentTime);
-
-                    if (Math.floor(audio.currentTime) % 5 === 0) {
-                        saveProgress(ep.id, audio.currentTime, false);
-                    }
-                });
-
-                audio.addEventListener('ended', () => {
-                    saveProgress(ep.id, audio.currentTime, true);
-                    currentPlayingEpisode = null;
-                    loadEpisodes();
-                });
-
-                audio.addEventListener('play', () => {
-                    document.querySelectorAll('audio').forEach(a => {
-                        if (a !== audio) a.pause();
-                    });
-                    currentPlayingEpisode = ep.id;
-                    loadEpisodes();
-                });
-
-                audio.addEventListener('pause', () => {
-                    if (currentPlayingEpisode === ep.id) {
-                        currentPlayingEpisode = null;
-                        loadEpisodes();
-                    }
-                });
-            });
-        }
-
-        function togglePlay(episodeId) {
-            const audio = document.getElementById(`audio-${episodeId}`);
-            if (audio.paused) {
-                const playbackState = JSON.parse(localStorage.getItem(`playback_${episodeId}`) || '{}');
-                if (playbackState.position_seconds) {
-                    audio.currentTime = playbackState.position_seconds;
-                }
-                audio.play();
-            } else {
-                audio.pause();
-            }
-        }
-
-        function saveProgress(episodeId, position, completed) {
-            const playbackState = {
-                position_seconds: Math.floor(position),
-                completed: completed,
-                last_played: new Date().toISOString()
-            };
-            localStorage.setItem(`playback_${episodeId}`, JSON.stringify(playbackState));
-        }
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.topic;
-                loadEpisodes();
+            audio.addEventListener('canplay', () => {
+                console.log(`音频 ${index + 1} 加载成功`);
             });
         });
-
-        // Initialize
-        loadStats();
-        loadEpisodes();
     </script>
 </body>
 </html>

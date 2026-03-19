@@ -75,6 +75,16 @@
             height: 40px;
         }
 
+        .new-badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
         @media (max-width: 640px) {
             body {
                 padding: 30px 16px;
@@ -90,10 +100,23 @@
         <h1>私人播客</h1>
 
         <div class="stats">
-            AI 2期 (1h 18m)
+            AI 3期 (2h 2m)
         </div>
 
-        <!-- Episode 1: Jeff Kaplan 中文播客 -->
+        <!-- Episode 1: AI 自我改进 -->
+        <div class="episode-card">
+            <div class="episode-title">
+                瑕疵是人类的防御机制：AI如何自我改进（中文播客）
+                <span class="new-badge">新</span>
+            </div>
+            <div class="episode-desc">OpenAI前研究员Andrej Karpathy的Autoresearch开启了递归式自我学习的大门。本期中文播客深入分析AI自我进化的可能性与风险。</div>
+            <div class="episode-meta">时长：39:20 | 发布：2026-03-18</div>
+            <audio controls preload="metadata">
+                <source src="audio/20260318_080304_ai_self_improvement.m4a" type="audio/mp4">
+            </audio>
+        </div>
+
+        <!-- Episode 2: Jeff Kaplan -->
         <div class="episode-card">
             <div class="episode-title">游戏设计传奇：Jeff Kaplan的职业生涯、设计哲学与暴雪往事（中文播客）</div>
             <div class="episode-desc">Jeff Kaplan是暴雪传奇游戏设计师，曾主导《魔兽世界》和《守望先锋》。本期中文播客深入探讨了他的职业生涯、设计哲学和暴雪往事。</div>
@@ -103,7 +126,7 @@
             </audio>
         </div>
 
-        <!-- Episode 2: 设计师AI时代 -->
+        <!-- Episode 3: 设计师AI时代 -->
         <div class="episode-card">
             <div class="episode-title">设计师在AI时代出路很清晰：远离Figma，尽早写代码</div>
             <div class="episode-desc">Cursor设计负责人Ryo Lu深度对话：设计师如何转型为独立构建者（Builder）。从Figma到代码，从分工到独立创造。</div>
@@ -115,16 +138,15 @@
     </div>
 
     <script>
-        // 简单的错误处理
         document.querySelectorAll('audio').forEach((audio, index) => {
-            audio.addEventListener('error', (e) => {
-                console.error('音频加载失败:', e);
+            audio.addEventListener('error', () => {
+                console.error(`音频 ${index + 1} 加载失败`);
                 const card = audio.closest('.episode-card');
                 const errorMsg = document.createElement('div');
-                errorMsg.style.color = 'red';
+                errorMsg.style.color = '#dc2626';
                 errorMsg.style.fontSize = '12px';
                 errorMsg.style.marginTop = '10px';
-                errorMsg.textContent = '⚠️ 音频文件加载失败，请检查文件路径';
+                errorMsg.textContent = '⚠️ 音频加载失败，请稍后再试';
                 card.appendChild(errorMsg);
             });
 

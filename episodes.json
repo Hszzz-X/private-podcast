@@ -1,31 +1,29 @@
 [
   {
-    "id": 8,
-    "title": "游戏设计传奇：Jeff Kaplan的职业生涯、设计哲学与暴雪往事（中文播客）",
-    "url": "https://hszzz-x.github.io/private-podcast/audio/20260316_070226_jeff_kaplan.m4a",
-    "original_url": "https://www.youtube.com/watch?v=H9rF1CSSh-w",
-    "description": "Jeff Kaplan是暴雪传奇游戏设计师，曾主导《魔兽世界》和《守望先锋》。本期中文播客深入探讨了他的职业生涯、设计哲学和暴雪往事。",
+    "id": 1,
+    "title": "瑕疵是人类的防御机制：AI如何自我改进（中文播客）",
+    "url": "https://hszzz-x.github.io/private-podcast/audio/20260318_080304_ai_self_improvement.m4a",
+    "description": "OpenAI前研究员Andrej Karpathy的Autoresearch开启了递归式自我学习的大门。本期中文播客深入分析AI自我进化的可能性与风险。",
     "topic": "ai",
-    "source_type": "notebook",
-    "source_platform": "youtube",
-    "language": "zh-Hans",
-    "duration_seconds": 1860,
-    "publish_date": "2026-03-16",
-    "created_at": "2026-03-16T14:02:00.000Z",
-    "notebook_id": "7fac7e71-ad05-40cb-b610-9f5c582a82e9",
-    "summary_url": "https://hszzz-x.github.io/private-podcast/notes/20260316_053925_jeff_kaplan.md",
-    "is_original_audio": false
+    "duration_seconds": 2360,
+    "publish_date": "2026-03-18"
   },
   {
-    "id": 1,
+    "id": 2,
+    "title": "游戏设计传奇：Jeff Kaplan的职业生涯、设计哲学与暴雪往事（中文播客）",
+    "url": "https://hszzz-x.github.io/private-podcast/audio/20260316_070226_jeff_kaplan.m4a",
+    "description": "Jeff Kaplan是暴雪传奇游戏设计师，曾主导《魔兽世界》和《守望先锋》。本期中文播客深入探讨了他的职业生涯、设计哲学和暴雪往事。",
+    "topic": "ai",
+    "duration_seconds": 1860,
+    "publish_date": "2026-03-16"
+  },
+  {
+    "id": 3,
     "title": "设计师在AI时代出路很清晰：远离Figma，尽早写代码",
     "url": "https://hszzz-x.github.io/private-podcast/audio/20260315_014557_.m4a",
     "description": "Cursor设计负责人Ryo Lu深度对话：设计师如何转型为独立构建者（Builder）。从Figma到代码，从分工到独立创造。",
     "topic": "ai",
-    "source_type": "podcast",
     "duration_seconds": 2820,
-    "publish_date": "2026-03-15",
-    "created_at": "2026-03-15T00:00:00.000Z",
-    "summary_url": "https://hszzz-x.github.io/private-podcast/notes/20260315_014557__精讲稿.md"
+    "publish_date": "2026-03-15"
   }
 ]
